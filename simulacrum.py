@@ -51,8 +51,8 @@ class SessionTests (unittest.TestCase):
     def test_two_attr_session_reprs(self):
         (S, x, y) = self._setup_two_attr_session()
 
-        self.assertRegexpMatches('^<Simulacrum@[0-9a-f]{8,16}.probe.x>$', repr(x))
-        self.assertRegexpMatches('^<Simulacrum@[0-9a-f]{8,16}.probe.y>$', repr(y))
+        self.assertRegexpMatches(repr(x), '^<Simulacrum@[0-9a-f]{8,16} .probe.x>$')
+        self.assertRegexpMatches(repr(y), '^<Simulacrum@[0-9a-f]{8,16} .probe.y>$')
 
         # TODO: assert that we can verify __repr__ was called.
         # This requires a feature of configuration, which will come after basic record/verify.
@@ -114,8 +114,8 @@ class SessionTests (unittest.TestCase):
     def test_two_return_session_reprs(self):
         (S, x, y) = self._setup_two_attr_session()
 
-        self.assertRegexpMatches('^<Simulacrum@[0-9a-f]{8,16}.probe()#0>$', repr(x))
-        self.assertRegexpMatches('^<Simulacrum@[0-9a-f]{8,16}.probe()#1>$', repr(y))
+        self.assertRegexpMatches(repr(x), '^<Simulacrum@[0-9a-f]{8,16} .probe()#0>$')
+        self.assertRegexpMatches(repr(y), '^<Simulacrum@[0-9a-f]{8,16} .probe()#1>$')
 
         # TODO: assert that we can verify __repr__ was called.
         # This requires a feature of configuration, which will come after basic record/verify.
@@ -124,12 +124,12 @@ class SessionTests (unittest.TestCase):
         S = Simulacrum()
 
         self.assertRegexpMatches(
-            '^<Simulacrum@[0-9a-f]{8,16}.probe(42, flag=True)#0.thingy>$',
-            repr(S.probe(42, flag=True).thingy))
+            repr(S.probe(42, flag=True).thingy),
+            '^<Simulacrum@[0-9a-f]{8,16} .probe(42, flag=True)#0.thingy>$')
 
         self.assertRegexpMatches(
-            '^<Simulacrum@[0-9a-f]{8,16}.spec(42, flag=True)#0.thingy>$',
-            repr(S.spec(42, flag=True).thingy))
+            repr(S.spec(42, flag=True).thingy),
+            '^<Simulacrum@[0-9a-f]{8,16} .spec(42, flag=True)#0.thingy>$')
 
 
 
