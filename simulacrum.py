@@ -4,12 +4,31 @@ import unittest
 class Simulacrum (object):
     """I record method calls and attribute accesses to a set of probe objects."""
     def __init__(self):
-        raise NotImplementedError(`Simulacrum`)
+        self.probe = Probe(self, '.probe')
+        self.spec = Probe(self, '.spec')
 
 
 class Probe (object):
-    def __init__(self):
-        raise NotImplementedError(`Simulacrum`)
+    def __init__(self, simulacrum, namepath):
+        self.__sim = simulacrum
+        self.__namepath = namepath
+        self.__callcount = 0
+
+    def __repr__(self):
+        return '<Simulacrum@%08x %s>' % (id(self.__sim), self.__namepath)
+
+    def __getattr__(self, name):
+        return Probe(self.__sim, '%s.%s' % (self.__namepath, name))
+
+    def __call__(self, *args, **kw):
+        argreprs = [repr(a) for a in args]
+        for (k, v) in kw.iteritems():
+            argreprs.append('%s=%r' % (k, v))
+
+        cc = self.__callcount
+        self.__callcount += 1
+
+        return Probe(self.__sim, '%s(%s)#%d' % (self.__namepath, ', '.join(argreprs), cc))
 
 
 # Unittests:
