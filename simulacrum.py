@@ -17,37 +17,35 @@ class SessionTests (unittest.TestCase):
     def test_empty_session(self):
         Recorder().get_verifier().verify()
 
-    def _setupSession(self):
+    def _setupTwoAttrSession(self):
         R = Recorder()
 
-        p1 = R.make_probe()
-        p2 = R.make_probe()
+        x = R.probe.x
+        y = R.probe.y
 
-        self.assertIsInstance(p1.someattr, Probe)
-        self.assertIsInstance(p2.somemethod(), Probe)
+        self.assertIsInstance(x.someattr, Probe)
+        self.assertIsInstance(y.somemethod(42, flag=True), Probe)
 
-        V = R.get_verifier()
-
-        return (V, p1, p2)
+        return (R, x, y)
 
     def test_basic_session_verification(self):
         '''Test that verification can verify side effects across multiple objects.'''
-        (V, p1, p2) = self._setupSession()
+        (R, x, y) = self._setupTwoAttrSession()
 
-        V.verify(
-            V[p1].someattr,
-            V[p2].somemethod,
+        R.verify(
+            R.spec.x.someattr,
+            R.spec.y.somemethod(42, flag=True),
             )
 
     def test_basic_session_order_sensitivity(self):
         '''Test that verification is sensitive to side-effect order across all probes.'''
-        (V, p1, p2) = self._setupSession()
+        (R, x, y) = self._setupTwoAttrSession()
 
         self.assertRaises(
             AssertionError,
-            V.verify,
-            V[p2].somemethod,
-            V[p1].someattr,
+            R.verify,
+            R.spec.y.somemethod(42, flag=True),
+            R.spec.x.someattr,
             )
 
 
