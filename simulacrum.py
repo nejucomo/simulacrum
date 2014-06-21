@@ -15,7 +15,7 @@ class Probe (object):
 # Unittests:
 class SessionTests (unittest.TestCase):
     def test_empty_session(self):
-        Simulacrum().get_verifier().verify()
+        Simulacrum().verify()
 
     def _setup_two_attr_session(self):
         S = Simulacrum()
