@@ -7,6 +7,9 @@ class Simulacrum (object):
         self.probe = Probe(self, '.probe')
         self.spec = Probe(self, '.spec')
 
+    def verify(self, *specs):
+        raise NotImplementedError(`Simulacrum.verify`)
+
 
 class Probe (object):
     def __init__(self, simulacrum, namepath):
