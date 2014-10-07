@@ -9,19 +9,19 @@ This is currently vapor-ware.  The idea is to provide a mocking library where:
 
 A quick sketch of the API might be something like:
 
-..code:: python
+.. code:: python
 
     import simulacrum
-    
+
     session = simulacrum.Session()
-    
+
     (mkdir_spec, mkdir_verifier) = session.patch('os.mkdir')
     mkdir_spec.return_value = None
-    
+
     (urlopen_spec, urlopen_verifier) = session.patch('urllib.urlopen')
-    
+
     application_code_function() # It's use of os.mkdir and urllib.urlopen use the "probes" associated with the specifications above.
-    
+
     assert session.interactions == [
         mkdir_verifier('/tmp/foo_app'),
         urlopen_verifier('http://example.com/foo', data=None),
